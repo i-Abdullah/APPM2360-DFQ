@@ -39,11 +39,10 @@ tspan_3 = [ 0:h3:25 ] ;
 L_Lions = 5.4; % Carraying capacity
 r = 0.65; % growth rate
 
-Lions0 = 6;
+Lions0 = 6/12;
 
 
-% pre-size matrices:
-
+% pre-define matrices:
 eulers_h1 = zeros(1,length(tspan_1));
 eulers_h2 = zeros(1,length(tspan_2));
 eulers_h3 = zeros(1,length(tspan_3));
@@ -84,7 +83,7 @@ end
 
 
 % exact sloution via separation of vars
-Lions_exact = @(t) L_Lions ./ ( 1 + (( (L_Lions/Lions0) -1 )* exp((-r*t)))) ;
+Lions_exact = @(t) L_Lions ./ ( 1 + (( (L_Lions/Lions0) -1 )* exp((-r*t))) ) ;
 
 
 figure(1)
@@ -101,7 +100,7 @@ legend('h = 0.5','h = 0.1','h = 0.01','Exact sloution')
 grid minor
 title('analytical solutions with various step sizes and the exact solution')
 xlabel('Time')
-ylabel('Population of Mountain Lions')
+ylabel('Population of Mountain Lions (in dozens)')
 x = 0;
 
 %% plot errors for question 3:
@@ -119,8 +118,13 @@ hold on
 semilogy(tspan_2,AbsError_h2);
 hold on
 semilogy(tspan_3,AbsError_h3);
+title('Absloute error of the numerical approximation')
+xlabel('Time')
+ylabel('Absloute error (logarithmic scale)')
+legend('Absloute error when h=0.5','Absloute error when h=0.1','Absloute error when h=0.01');
+grid minor
 
-xlim([-2 10]);
+%xlim([-2 10]);
 
 %% explore the beahvior of H(x)
 
@@ -130,8 +134,25 @@ q = 1;
 H = @(x) (p*(x.^2))/(q + (x.^2)) ; % harvesting function
 x_span = [0:1000]; % range for x.
 
-plot(x_span,H(x_span))
+% Evaluate the Harvesting function over the span
 
+for i=1:length(x_span)
+Harvest_values(i) = H(x_span(i)) ;
+end
+
+figure(3)
+plot(x_span,Harvest_values,'r*-');
+hold on
+refline(0,1.2)
+legend('Harvest results','H = 1.2','Location','SouthEast')
+hold off
+
+xlim([ 0 30])
+ylim([0 1.3])
+xlabel('Number of Mountain Lions')
+ylabel('Harvesting results')
+grid minor
+title('Harvesting function behavior as')
 %%
 
 % question 6
@@ -140,8 +161,59 @@ r = 0.65;
 p = 1.2;
 q = 1;
 
-Deers = @(x_Deer) r*(1 - (x_Deer/L))*x_Deer - ((p*(x_Deer.^2))/(q+(x_Deer.^2))) ; 
-a = [-1:.2:3];
-b = [-2:.2:2];
+Deers = @(time,x_Deer) 0.65*(1 - (x_Deer/8.1))*x_Deer - ((1.2*(x_Deer.^2))/(1+(x_Deer.^2))) ; 
+a = [0:.2:15];
+b = [-1:.2:5];
+
+%s = dirfield(Deers,a,b)
+figure(4)
+dirfield(Deers,a,b,'Direction Field');
+
+hold on
+
+%%  use euler's for deers:
+
+Deers = @(x_Deer) 0.65*(1 - (x_Deer/8.1))*x_Deer - ((1.2*(x_Deer.^2))/(1+(x_Deer.^2))) ; 
+
+% euler h = 0.01
+h_deer = 0.1 ; % step size of deers:
+tspan_deer = [ 0:h_deer:75 ] ;
+
+
+% initial condition of 24
+eulers_deer_24(1) = 24/12;
+eulers_deer_6(1) = 6/12;
+
+for i = 1:length(tspan_deer)
+    
+    eulers_deer_24(i+1) = eulers_deer_24(i) + h_deer*Deers(eulers_deer_24(i));
+    eulers_deer_6(i+1) = eulers_deer_6(i) + h_deer*Deers(eulers_deer_6(i));
+
+end
+
+hold on
+plot(tspan_deer,eulers_deer_24(1:end-1))
+hold on
+plot(tspan_deer,eulers_deer_6(1:end-1))
+hold off
+
+a = 0;
+
+
 
 %% question 2:
+
+% assume predator on x axis, prey on y.
+
+% predator = x1;
+% prey = x2;
+
+syms a b c d x1 x2
+
+% nullclines:
+x1_null_1 = a/b ; % x2 = a/b is null cline
+x1_null_2 = 0 ; % when x1 = 0;
+
+x2_null_1 = 0 ; % when x2 = 0 ;
+x2_null_2 = c/d ; % x1 = c/d ;
+
