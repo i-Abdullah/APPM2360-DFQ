@@ -30,8 +30,8 @@ close all; clear all;
     d = 1.4;
 
 % Step 4: define the system of equations you are using
-    dx1 = (-a*x1) + (b*x1*x2);
-    dx2 =  (c*x2) - (d*x1*x2);
+    dx1 = (-a.*x1) + (b.*x1.*x2);
+    dx2 =  (c.*x2) - (d.*x1.*x2);
 
 % normalize vectors (to help plotting)
     dx1 = dx1./sqrt(dx1.^2 + dx2.^2); 
@@ -57,7 +57,10 @@ x2_null_2 = ones(r,1)*x2_null_2;
 
 %% plot
 
-    quiver(x1, x2, dx1,dx2,'AutoScaleFactor',0.5)
+
+figure(1)
+
+    quiver(x1, x2, dx1,dx2,'AutoScaleFactor',0.8)
     hold on
     plot([x2_null_1 x2_null_1],[-1 10],'--k','LineWidth',1)
     hold on
@@ -74,9 +77,12 @@ x2_null_2 = ones(r,1)*x2_null_2;
     axis([x1min x1max x2min x2max])
 
 % Step 5: label the axes, include a title    
-    xlabel('$x1$','Interpreter','latex')
-    ylabel('$x2$','Interpreter','latex')
-    title('Vector field of Lotka-Volterra system','Interpreter','latex')
-    
+      xlabel('$x1$','Interpreter','latex')
+      ylabel('$x2$','Interpreter','latex')
+%     title('Vector field of Lotka-Volterra system','Interpreter','latex')
+    %legend('Direction fields','x2 null cline','x2 null cline','x1 null cline','x1 null cline')
+
+
+hold on
 
 

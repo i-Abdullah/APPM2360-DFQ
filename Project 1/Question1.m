@@ -1,4 +1,3 @@
-
 %% info
 
 clear
@@ -161,9 +160,9 @@ r = 0.65;
 p = 1.2;
 q = 1;
 
-Deers = @(time,x_Deer) 0.65*(1 - (x_Deer/8.1))*x_Deer - ((1.2*(x_Deer.^2))/(1+(x_Deer.^2))) ; 
-a = [0:.2:15];
-b = [-1:.2:5];
+Deers = @(time,x_Deer) (0.65*(1 - (x_Deer/8.1)).*x_Deer) - ((1.2*(x_Deer.^2))./(1+(x_Deer.^2))) ; 
+a = [0:.2:10];
+b = [-1:.2:6];
 
 %s = dirfield(Deers,a,b)
 figure(4)
@@ -195,40 +194,7 @@ hold on
 plot(tspan_deer,eulers_deer_24(1:end-1))
 hold on
 plot(tspan_deer,eulers_deer_6(1:end-1))
+legend('1','2','3')
 hold off
 
 a = 0;
-
-
-
-%% question 2:
-
-% assume predator on x axis, prey on y.
-
-% predator = x1;
-% prey = x2;
-
-syms a b c d x1 x2
-
-% nullclines:
-x1_null_1 = a/b ; % x2 = a/b is null cline
-x1_null_2 = 0 ; % when x1 = 0;
-
-x2_null_1 = 0 ; % when x2 = 0 ;
-x2_null_2 = c/d ; % x1 = c/d ;
-
-
-% ODE 45:
-
-    a = 1.5;
-    b = 1.1;
-    c = 2.5;
-    d = 1.4;
-
-    
-    tspan = [ 0 20 ] ;
-    x1_0 = 0.5;
-    x2_0 = 1;
-    
-[ t results ] = ode45(@(time,states) PP(time,states,a,b,c,d), tspan, [x1_0 x2_0] );
-
