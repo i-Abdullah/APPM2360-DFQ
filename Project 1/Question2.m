@@ -41,7 +41,7 @@ hold on
 [ t results ] = ode45(@(time,states) PP(time,states,a,b,c,d), tspan, [x1_0 x2_0] );
 
 plot(results(:,1), results(:,2))
-plot(x1_null_1(1),x2_null_1(1),'g','MarkerSize',15)
+scatter(x1_null_1(1),x2_null_1(1),'sg','LineWidth',15)
 title('phase-plane solution')
 xlabel('predator population')
 ylabel('prey population')

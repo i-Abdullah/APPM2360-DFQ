@@ -60,7 +60,7 @@ x2_null_2 = ones(r,1)*x2_null_2;
 
 figure(1)
 
-    quiver(x1, x2, dx1,dx2,'AutoScaleFactor',0.8)
+    quiver(x1, x2, dx1,dx2,'AutoScaleFactor',0.4)
     hold on
     plot([x2_null_1 x2_null_1],[-1 10],'--k','LineWidth',1)
     hold on

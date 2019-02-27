@@ -94,8 +94,9 @@ hold on
 plot(tspan_3,eulers_h3(1:end-1),'.-','LineWidth',1);
 hold on
 plot(tspan_2,Lions_exact(tspan_2),'LineWidth',1.5)
-xlim([0 10])
-legend('h = 0.5','h = 0.1','h = 0.01','Exact sloution')
+xlim([0 25])
+ylim([0 6])
+legend('h = 0.5','h = 0.1','h = 0.01','Exact sloution','Location','SouthEast')
 grid minor
 title('analytical solutions with various step sizes and the exact solution')
 xlabel('Time')
@@ -161,8 +162,8 @@ p = 1.2;
 q = 1;
 
 Deers = @(time,x_Deer) (0.65*(1 - (x_Deer/8.1)).*x_Deer) - ((1.2*(x_Deer.^2))./(1+(x_Deer.^2))) ; 
-a = [0:.2:10];
-b = [-1:.2:6];
+a = [0:2:75];
+b = [0:0.3:10];
 
 %s = dirfield(Deers,a,b)
 figure(4)
@@ -181,20 +182,21 @@ tspan_deer = [ 0:h_deer:75 ] ;
 
 % initial condition of 24
 eulers_deer_24(1) = 24/12;
-eulers_deer_6(1) = 6/12;
+eulers_deer_8(1) = 96/12;
 
 for i = 1:length(tspan_deer)
     
     eulers_deer_24(i+1) = eulers_deer_24(i) + h_deer*Deers(eulers_deer_24(i));
-    eulers_deer_6(i+1) = eulers_deer_6(i) + h_deer*Deers(eulers_deer_6(i));
+    eulers_deer_8(i+1) = eulers_deer_8(i) + h_deer*Deers(eulers_deer_8(i));
 
 end
 
 hold on
-plot(tspan_deer,eulers_deer_24(1:end-1))
+plot(tspan_deer,eulers_deer_24(1:end-1),'LineWidth',2)
 hold on
-plot(tspan_deer,eulers_deer_6(1:end-1))
-legend('1','2','3')
+plot(tspan_deer,eulers_deer_8(1:end-1),'LineWidth',2)
+legend('Direction fields','Direction fields','Euler with x(0) = 2 dozens','Euler with x(0) = 8 dozens','Location','NorthEast')
+xlabel('Time')
+ylabel('Dozents of deers')
 hold off
 
-a = 0;
