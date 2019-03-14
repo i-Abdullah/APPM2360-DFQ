@@ -41,10 +41,9 @@ hold on
 [ t results ] = ode45(@(time,states) PP(time,states,a,b,c,d), tspan, [x1_0 x2_0] );
 
 plot(results(:,1), results(:,2))
-scatter(x1_null_1(1),x2_null_1(1),'sg','LineWidth',15)
-title('phase-plane solution')
-xlabel('predator population')
-ylabel('prey population')
+      xlabel('$x1$ (predator,Mountain Lions)','Interpreter','latex')
+      ylabel('$x2$ (prey, Deers)','Interpreter','latex')
+    title('Vector field of Lotka-Volterra system','Interpreter','latex')
 %legend('Direction fields','x2 null cline','x2 null cline','x1 null cline','x1 null cline','Numerical solution','1','2')
 grid minor
 hold off

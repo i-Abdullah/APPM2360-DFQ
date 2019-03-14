@@ -55,26 +55,33 @@ eulers_h3(1) = Lions0;
 Lions_derivative = @(x) r*(1 - ( x / L_Lions ) )* x ;
 
 % euler h = 0.5;
+tic
 for i = 1:length(tspan_1)
     
     eulers_h1(i+1) = eulers_h1(i) + h1*Lions_derivative(eulers_h1(i));
     
 end
+toc
 
 % euler h = 0.1
+tic
 for i = 1:length(tspan_2)
     
     eulers_h2(i+1) = eulers_h2(i) + h2*Lions_derivative(eulers_h2(i));
     
 end
+toc
 
 % euler h = 0.01
+tic
 for i = 1:length(tspan_3)
     
     eulers_h3(i+1) = eulers_h3(i) + h3*Lions_derivative(eulers_h3(i));
     
 end
+toc
 
+% tic toc added to see time it took to run the math!
 
 % question 1: analytical solution
 
@@ -149,8 +156,8 @@ hold off
 
 xlim([ 0 30])
 ylim([0 1.3])
-xlabel('Number of Mountain Lions')
-ylabel('Harvesting results')
+xlabel('Number of Deer (dozens)')
+ylabel('H(x)')
 grid minor
 title('Harvesting function behavior as')
 %%
@@ -191,6 +198,7 @@ for i = 1:length(tspan_deer)
 
 end
 
+% plot results
 hold on
 plot(tspan_deer,eulers_deer_24(1:end-1),'LineWidth',2)
 hold on

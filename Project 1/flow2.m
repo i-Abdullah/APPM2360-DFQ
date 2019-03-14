@@ -29,10 +29,11 @@ clc
     b = 1.1;
     c = 2.5;
     d = 1.4;
+    k = 0.5
 
 % Step 4: define the system of equations you are using
     dx1 = (-a.*x1) + (b.*x1.*x2);
-    dx2 =  (c.*x2) - (d.*x1.*x2);
+    dx2 =  (c.*(1-k.*x2).*x2) - (d.*x1.*x2);
 
 % normalize vectors (to help plotting)
     dx1 = dx1./sqrt(dx1.^2 + dx2.^2); 
@@ -41,20 +42,22 @@ clc
 % generate the vector field
 
 %% nullclines:
-x1_null_1 = a/b ; % x2 = a/b is null cline
+x1_null_1 = b/a ; % x2 = a/b is null cline
 x1_null_2 = 0 ; % when x1 = 0;
 
 x2_null_1 = 0 ; % when x2 = 0 ;
-x2_null_2 = c/d ; % x1 = c/d ;
+x2_null_2 = @(x22) c/d - ((k*c)/d) * x22 ; % line
+x2_null_2 = @(x11) (1/k) * ( 1 - (d/c)*x11) ; % line
 
 % put null clines in vectors to plot:
 
 [ r c ] = size(x1);
 
-x1_null_1 = ones(r,1)*x1_null_1;
-x1_null_2 = ones(r,1)*x1_null_2;
-x2_null_1 = ones(r,1)*x2_null_1;
-x2_null_2 = ones(r,1)*x2_null_2;
+x1_null_1 = ones(r,1).*x1_null_1;
+x1_null_2 = ones(r,1).*x1_null_2;
+x2_null_1 = ones(r,1).*x2_null_1;
+x2_null_2 = x2_null_2([-10:1:20]);
+
 
 %% plot
 
@@ -69,11 +72,14 @@ figure(1)
     hold on
     line([-1 10],[x2_null_1 x2_null_1],'Color','black','LineStyle','--','LineWidth',2)
     hold on
-    line([x2_null_2 x2_null_2],[-1 10],'Color','black','LineStyle','--','LineWidth',2)
+    %line([x2_null_2 x2_null_2],[-1 10],'Color','red','LineStyle','--','LineWidth',2)
+    plot(x2_null_2,[-10:1:20],'--k','LineWidth',2)
     hold on
+x2_null_2 = @(x11) (1/k) * ( 1 - (d/c)*x11) ; % line
     scatter(x1_null_2(1),x2_null_1(1),'g*','LineWidth',5)
-    %scatter(x2_null_1(1),x1_null_1(1),'g*','LineWidth',5)
-    scatter(x2_null_2(1),x1_null_1(1),'g*','LineWidth',5)
+    %scatter(x1_null_1(1),x2_null_2(x1_null_1(1)),'g*','LineWidth',5)
+    
+    %scatter(x1_null_2(1),x2_null_2(x1_null_2),'g*','LineWidth',5)
     grid minor
     %legend('Direction fields','x2 null cline','x2 null cline','x1 null cline','x1 null cline')
 %legend
