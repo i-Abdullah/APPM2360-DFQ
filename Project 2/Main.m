@@ -69,60 +69,62 @@ eigs(Ak1_4)
 
 %% apply it thousand times!!
 
-A_10 = An(10);
-A_20 = An(20);
-A_100 = An(100);
 
-[ Q10 R10 ] = cgs(A_10);
-[ Q20 R20 ] = cgs(A_20);
-[ Q100 R100 ] = cgs(A_100);
+%% An = 10
+Matrix = {};
 
-AK10 = Q10*R10;
-AK20 = Q20*R20;
-AK100 = Q100*R100;
-% 
-AK10_1 = R10*Q10 ;
-AK20_1 = R20*Q20 ;
-AK100_1 = R100*Q100 ;
-
-error_10(1) = abs(eigs(AK10,1) - min(eigs(AK10))) ;
-error_10(2) = abs(eigs(AK10_1,1) - min(eigs(AK10_1))) ;
+An10 = An(10);
+Matrix{1} = An10;
 
 for i = 1:1000
     
-
-    
-    if mod(i,2)==1 % if we have odd numbers
-        [ Q10 R10 ] = cgs(AK10_1);
-        [ Q20 R20 ] = cgs(AK20_1);
-        [ Q100 R100 ] = cgs(AK100_1);
-        
-        
-        AK10_1 = Q10*R10
-        AK20_1 = Q20*R20;
-        AK100_1 = Q100*R100;
-
-        error_10(i+2) = abs(eigs(AK10_1,1) - min(eigs(AK10_1))) ;
-
-        
-    else % even index
-        
-        [ Q10 R10 ] = cgs(AK10_1);
-        [ Q20 R20 ] = cgs(AK20_1);
-        [ Q100 R100 ] = cgs(AK100_1);
-        
-        
-        AK10_1 = R10*Q10;
-        AK20_1 = R20*Q20;
-        AK100_1 = R100*Q100;
-
-        error_10(i+2) = abs(eigs(AK10_1,1) - min(eigs(AK10_1))) ;
-
-        
-    end
-    
-    
+   
+    [ Q R ] = cgs(Matrix{i});
+    Matrix{i+1} = R*Q;
     
 end
 
-%%
+An10_error = abs ( pi^2 - min(diag(Matrix{end})) ) 
+
+
+%% An = 20
+Matrix = {};
+
+An20 = An(20);
+Matrix{1} = An20;
+
+for i = 1:1000
+    
+   
+    [ Q R ] = cgs(Matrix{i});
+    Matrix{i+1} = R*Q;
+    
+end
+
+An20_error = abs ( pi^2 - min(diag(Matrix{end})) ) 
+
+%% An = 100
+Matrix = {};
+
+An100 = An(100);
+Matrix{1} = An100;
+
+for i = 1:1000
+    
+   
+    [ Q R ] = cgs(Matrix{i});
+    Matrix{i+1} = R*Q;
+    
+end
+
+An100_error = abs ( pi^2 - min(diag(Matrix{end})) ) 
+
+%% plot error
+
+figure(1)
+plot([ 1 2 3 ],[ An10_error An20_error An100_error ],'--r*')
+title('Error in egienvalues vs matrix An size')
+xlabel('Size of matrix');
+ylabel('Error');
+xticklabels({'An = 10','','','','', 'An = 20','','','','', 'An = 100'})
+grid minor
